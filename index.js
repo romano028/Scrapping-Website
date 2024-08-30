@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 var bodyParser = require('body-parser');  
 const chromium = require('chrome-aws-lambda');
 const app = express();
@@ -81,7 +81,7 @@ app.get("/greet", (req, res) => {
     res.send({ msg: `Welcome ${name}!` });
 });
 app.get("/", (req, res) => {
-    res.send("Express on Hello World");
+    res.send("Express on Vercel");
   });
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
