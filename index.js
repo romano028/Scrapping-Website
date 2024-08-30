@@ -5,9 +5,9 @@ var bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 var urlencodedParser = bodyParser.urlencoded({ extended: false })  
-// app.use(cors());
+app.use(cors());
 // app.use(express.bodyParser());
-app.get('/scrap',urlencodedParser , async (req, res) => {
+app.post('/scrap',urlencodedParser , async (req, res) => {
 
     /*  const url = req.body.url;
         try {
