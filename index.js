@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const puppeteer = require('puppeteer');
 var bodyParser = require('body-parser');  
+const chromium = require('chrome-aws-lambda');
 const app = express();
 const port = 3000;
 var urlencodedParser = bodyParser.urlencoded({ extended: false })  
@@ -11,7 +12,7 @@ app.post('/scrap',urlencodedParser , async (req, res) => {
 
      const url = req.body.url;
         try {
-            const browser = await puppeteer.launch({
+            const browser = await chromium.puppeteer.launch({
                 headless: true,
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
             });

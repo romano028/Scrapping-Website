@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.4",
@@ -11,6 +12,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
+    "postinstall": "npm puppeteer install",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
