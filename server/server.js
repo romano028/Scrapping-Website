@@ -14,7 +14,7 @@ app.use(cors({
 // app.use(express.bodyParser());
 app.post('/scrap',urlencodedParser , async (req, res) => {
 
-     const url = req.body.url;
+    /*  const url = req.body.url;
         try {
             const browser = await puppeteer.launch({
                 headless: true,
@@ -67,11 +67,7 @@ app.post('/scrap',urlencodedParser , async (req, res) => {
             });
             const htmlContent = await page.content();
             // Extract product data
-            /*  const products = await page.evaluate(() => {
-                const productElements = document.querySelectorAll('body');
-    
-                return productElements;
-            }); */
+         
 
        
             res.status(200).json([htmlContent]);
@@ -79,7 +75,14 @@ app.post('/scrap',urlencodedParser , async (req, res) => {
             console.error('Error:', error);
             res.status(500).json({ error: 'An error occured while scraping the page.'});
         }
+ */
+        res.status(200).json(["htmlContent"]);
     
+});
+app.get("/greet", (req, res) => {
+    // get the passed query
+    const { name } = req.query;
+    res.send({ msg: `Welcome ${name}!` });
 });
 
 app.listen(port, () => {
