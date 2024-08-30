@@ -5,12 +5,7 @@ var bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 var urlencodedParser = bodyParser.urlencoded({ extended: false })  
-app.use(cors({
-    origin: 'http://localhost',
-    methods: ['POST'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
-}));
+// app.use(cors());
 // app.use(express.bodyParser());
 app.post('/scrap',urlencodedParser , async (req, res) => {
 
@@ -84,7 +79,9 @@ app.get("/greet", (req, res) => {
     const { name } = req.query;
     res.send({ msg: `Welcome ${name}!` });
 });
-
+app.get("/", (req, res) => {
+    res.send("Express on Vercel");
+  });
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
