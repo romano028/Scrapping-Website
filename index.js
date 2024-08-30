@@ -81,7 +81,7 @@ app.get("/greet", (req, res) => {
     res.send({ msg: `Welcome ${name}!` });
 });
 app.get("/", (req, res) => {
-    res.send("Express on Vercel");
+    res.send("Express on Hello WOrld");
   });
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
