@@ -10,7 +10,7 @@ app.use(cors({
     methods: ['POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true
-}));
+})); 
 // app.use(express.bodyParser());
 app.post('/scrap',urlencodedParser , async (req, res) => {
 
