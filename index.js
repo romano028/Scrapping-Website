@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 var bodyParser = require('body-parser');  
 const chromium = require('chrome-aws-lambda');
 const app = express();
