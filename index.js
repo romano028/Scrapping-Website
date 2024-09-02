@@ -1,4 +1,3 @@
-// For running htmljson.json
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -21,15 +20,20 @@ const corsForRoute = cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 });
 
-// Define routes with specific CORS handling
+// Define root route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Scraping API!');
+});
+
+// Define /scrap route with specific CORS handling
 app.get('/scrap', corsForRoute, async (req, res) => {
     let options = {};
 
     if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
         options = {
-            args: [...chrome.args, "--hide-scrolbars", "--disable-web-security"],
+            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
             defaultViewport: chrome.defaultViewport,
-            executablePath: await chrome.executabablePath,
+            executablePath: await chrome.executablePath,
             headless: true,
             ignoreHTTPSErrors: true,
         };
@@ -39,16 +43,17 @@ app.get('/scrap', corsForRoute, async (req, res) => {
         let browser = await puppeteer.launch(options);
 
         let page = await browser.newPage();
-        await page.goto("https//www.google.com");
-        res.send(await page.title());
+        await page.goto("https://www.google.com");
+        const title = await page.title();
+        await browser.close(); // Close the browser
+
+        res.send(title);
     } catch (error) {
-        console.error(error);
-        return null;
+        console.error("Error occurred:", error); // Log the error
+        res.status(500).send("An error occurred");
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
-
