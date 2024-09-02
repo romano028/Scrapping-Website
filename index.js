@@ -20,12 +20,7 @@ const corsForRoute = cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 });
 
-// Define root route
-app.get('/', (req, res) => {
-    res.send('Welcome to the Scraping API!');
-});
-
-// Define /scrap route with specific CORS handling
+// Define routes with specific CORS handling
 app.get('/scrap', corsForRoute, async (req, res) => {
     let options = {};
 
@@ -45,7 +40,7 @@ app.get('/scrap', corsForRoute, async (req, res) => {
         let page = await browser.newPage();
         await page.goto("https://www.google.com");
         const title = await page.title();
-        await browser.close(); // Close the browser
+        await browser.close(); // Close the browser after use
 
         res.send(title);
     } catch (error) {
