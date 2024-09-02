@@ -42,7 +42,7 @@ app.get('/scrap', corsForRoute, async (req, res) => {
         await page.goto("https//www.google.com");
         res.send(await page.title());
     } catch (error) {
-        console.error(err);
+        console.error(error);
         return null;
     }
 });
