@@ -1,52 +1,85 @@
 const express = require('express');
 const cors = require('cors');
+const puppeteer = require('puppeteer');
+var bodyParser = require('body-parser');  
 const app = express();
 const port = 3000;
+var urlencodedParser = bodyParser.urlencoded({ extended: false })  
+app.use(cors({
+    origin: 'http://localhost',
+    methods: ['POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true
+}));
+// app.use(express.bodyParser());
+app.post('/scrap',urlencodedParser , async (req, res) => {
 
-let chrome = {};
-let puppeteer;
+     const url = "https://stackoverflow.com/questions/58965011/sequelizeconnectionerror-self-signed-certificate";
+        try {
+            const browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            });
+            const page = await browser.newPage();
+          
 
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-    chrome = require("chrome-aws-lambda");
-    puppeteer = require("puppeteer-core");
-} else {
-    puppeteer = require("puppeteer");
-}
+            // Set initial User-Agent for non-image requests
+            await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36');
+            await page.evaluateOnNewDocument(() => {
+                Intl.DateTimeFormat().resolvedOptions().timeZone = 'Asia/Manila';
+            });
+    
+            // Intercept requests to modify User-Agent for images
+            await page.setRequestInterception(true);
+            page.on('request', (request) => {
+                if (request.resourceType() === 'image') {
+                    // Continue without modifying the User-Agent for image requests
+                    request.continue();
+                } else {
+                    request.continue();
+                }
+            });
+    
+            // Navigate to the page
+            await page.goto(url, {
+                timeout: 30000, // Increased timeout for slow-loading pages
+                waitUntil: 'networkidle2', // Ensure the page is fully loaded
+            });
+    
+            // Wait for product tiles to appear
+            // await page.waitForSelector('div[data-testid="productTile"]', { visible: true });
+    
+            // Scroll down to trigger lazy-loaded images
+            await page.evaluate(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+    
+            // Wait for images to load
+            await page.evaluate(async () => {
+                const images = Array.from(document.querySelectorAll('img'));
+                await Promise.all(images.map(img => {
+                    if (img.complete) return;
+                    return new Promise((resolve) => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    });
+                }));
+            });
+            const htmlContent = await page.content();
+            // Extract product data
+            /*  const products = await page.evaluate(() => {
+                const productElements = document.querySelectorAll('body');
+    
+                return productElements;
+            }); */
 
-// Middleware to set CORS headers for specific routes
-const corsForRoute = cors({
-    origin: '*', // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-});
-
-// Define routes with specific CORS handling
-app.get('/scrap', corsForRoute, async (req, res) => {
-    let options = {};
-
-    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-        options = {
-            args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-            defaultViewport: chrome.defaultViewport,
-            executablePath: await chrome.executablePath,
-            headless: true,
-            ignoreHTTPSErrors: true,
-        };
-    }
-
-    try {
-        let browser = await puppeteer.launch(options);
-
-        let page = await browser.newPage();
-        await page.goto("https://www.google.com");
-        const title = await page.title();
-        await browser.close(); // Close the browser after use
-
-        res.send(title);
-    } catch (error) {
-        console.error("Error occurred:", error); // Log the error
-        res.status(500).send("An error occurred");
-    }
+       
+            res.status(200).json([htmlContent]);
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'An error occured while scraping the page.'});
+        }
+    
 });
 
 app.listen(port, () => {
