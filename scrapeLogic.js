@@ -5,7 +5,7 @@ const scrapeLogic = async (res) => {
  
   try {
 
-    const url = "https://stackoverflow.com/questions/58965011/sequelizeconnectionerror-self-signed-certificate";
+    const url = "https://www.google.com";
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",
