@@ -1,5 +1,2 @@
-/.node_modules
-.env
-/vendor/
-/.vercel
 /node_modules
+.env
