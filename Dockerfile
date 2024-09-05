@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 10000
 
 # Start the Node.js Express server
-CMD ["node", "server.js"]
+CMD ["node", "index.js"]
