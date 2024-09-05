@@ -4,6 +4,8 @@ require("dotenv").config();
 const scrapeLogic = async (res) => {
  
   try {
+
+    const url = "https://stackoverflow.com/questions/58965011/sequelizeconnectionerror-self-signed-certificate";
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",
@@ -19,8 +21,15 @@ const scrapeLogic = async (res) => {
     //  let browser = await puppeteer.launch(options);
 
     let page = await browser.newPage();
-    await page.goto("https://www.google.com");
-    res.send(await page.title());
+    await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36');
+         
+    await page.goto(url);
+
+    const htmlContent = await page.content();
+    // res.send(await page.title());
+    res.status(200).json([htmlContent]);
+
+    
    /*  const page = await browser.newPage();
 
     await page.goto("https://developer.chrome.com/");
