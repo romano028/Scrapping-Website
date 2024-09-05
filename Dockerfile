@@ -30,8 +30,9 @@ RUN npm install puppeteer --no-save
 COPY --chown=apify:apify . .
 
 # Update the PUPPETEER_EXECUTABLE_PATH to the correct Chrome path (placeholder, update based on the output of `which google-chrome-stable`)
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true  \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+
 
 # Set the command to run your Puppeteer script
 CMD ["node", "index.js"]
