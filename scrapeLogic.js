@@ -28,9 +28,9 @@ const scrapeLogic = async (res) => {
          
     await page.goto(url, { timeout: 60000, waitUntil: 'networkidle2' });
 
-    // const htmlContent = await page.content();
-    res.send(await page.title());
-    // res.status(200).json([htmlContent]);
+    const htmlContent = await page.content();
+    // res.send(await page.title());
+    res.status(200).json([htmlContent]);
 
     
    /*  const page = await browser.newPage();
