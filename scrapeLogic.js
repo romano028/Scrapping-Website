@@ -21,9 +21,12 @@ const scrapeLogic = async (res) => {
     //  let browser = await puppeteer.launch(options);
 
     let page = await browser.newPage();
+    await page.setDefaultTimeout(60000);
+    // await page.setDefaultNavigationTimeout(60000); 
+
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36');
          
-    await page.goto(url);
+    await page.goto(url, { timeout: 60000, waitUntil: 'networkidle2' });
 
     // const htmlContent = await page.content();
     res.send(await page.title());
