@@ -1,11 +1,11 @@
 const puppeteer = require("puppeteer");
 require("dotenv").config();
 
-const scrapeLogic = async (res) => {
+const scrapeLogic = async (req , res) => {
  
   try {
-
-    const url = "https://www.google.com";
+    const url = req.body.url;
+    // const url = "https://www.google.com";
     const browser = await puppeteer.launch({
       args: [
         "--disable-setuid-sandbox",

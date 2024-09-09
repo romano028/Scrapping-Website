@@ -1,11 +1,13 @@
 const express = require("express");
 const { scrapeLogic } = require("./scrapeLogic");
 const app = express();
+var bodyParser = require('body-parser');  
+var urlencodedParser = bodyParser.urlencoded({ extended: false })  
 
 const PORT = process.env.PORT || 10000;
  
-app.get("/scrape", (req, res) => {
-  scrapeLogic(res);
+app.post("/scrape",urlencodedParser , (req, res) => {
+  scrapeLogic(req , res);
   // res.send("Render Puppeteer ");
 });
 
