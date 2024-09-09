@@ -10,6 +10,9 @@ const scrapeLogic = async (req , res) => {
       args: [
         "--disable-setuid-sandbox",
         "--no-sandbox",
+       '--disable-dev-shm-usage',
+       '--headless',
+       '--disable-gpu'
         // "--single-process",
         "--no-zygote",
       ],
@@ -18,6 +21,7 @@ const scrapeLogic = async (req , res) => {
           ? process.env.PUPPETEER_EXECUTABLE_PATH
           : puppeteer.executablePath(),
     });
+
     //  let browser = await puppeteer.launch(options);
 
     let page = await browser.newPage();
