@@ -12,7 +12,6 @@ const scrapeLogic = async (req , res) => {
         "--no-sandbox",
        '--disable-dev-shm-usage',
        '--headless',
-       '--disable-gpu'
         // "--single-process",
         "--no-zygote",
       ],
