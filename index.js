@@ -2,9 +2,17 @@ const express = require("express");
 const { scrapeLogic } = require("./scrapeLogic");
 const app = express();
 var bodyParser = require('body-parser');  
-var urlencodedParser = bodyParser.urlencoded({ extended: false })  
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const cors = require('cors');
 
 const PORT = process.env.PORT || 10000;
+
+app.use(cors({
+    origin: 'http://192.168.50.13',
+    methods: ['POST', 'GET'], // Allow GET for the /data endpoint
+    allowedHeaders: ['Content-Type'],
+    credentials: true
+}));
  
 app.post("/scrape",urlencodedParser , (req, res) => {
   scrapeLogic(req , res);
