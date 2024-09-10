@@ -11,7 +11,7 @@ const path = require('path');
 const PORT = process.env.PORT || 10000;
 
 app.use(cors({
-    origin: 'http://192.168.50.13',
+    origin: 'http://scrapper-test.test',
     methods: ['POST', 'GET'], // Allow GET for the /data endpoint
     allowedHeaders: ['Content-Type'],
     credentials: true
