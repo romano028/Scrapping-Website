@@ -23,19 +23,10 @@ app.post("/scrape",urlencodedParser , (req, res) => {
 });
 
 app.post('/sheet', async (req, res) => {
-    const credentials = JSON.parse(fs.readFileSync('scraping-sheets-434807-eea03b997e41.json'));
-    // const auth = new google.auth.GoogleAuth({
-    //     keyFile: 'scraping-sheets-434807-eea03b997e41.json',
-    //     scopes: 'https://www.googleapis.com/auth/spreadsheets',
-    // });
-    
     const auth = new google.auth.GoogleAuth({
-    credentials: {
-        client_email: credentials.client_email,
-        private_key: credentials.private_key
-    },
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
+        keyFile: 'scraping-sheets-434807-eea03b997e41.json',
+        scopes: 'https://www.googleapis.com/auth/spreadsheets',
+    });
 
     const client = await auth.getClient();
     const googleSheets = google.sheets({ version: 'v4', auth: client });
