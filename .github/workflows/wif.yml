@@ -1,0 +1,27 @@
+jobs:
+  job_id:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: 'Checkout code'
+      uses: 'actions/checkout@v4'
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        project_id: 'lucky-monument-435212'
+        workload_identity_provider: 'projects/164866965749/locations/global/workloadIdentityPools/githubactions/providers/github'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        project_id: 'lucky-monument-435212'
+        install_components: 'beta'  # Optional: Specify components you need (e.g., 'beta', 'kubectl')
+
+    - name: 'Run gcloud command'
+      run: |
+        gcloud auth list
+        gcloud config set project lucky-monument-435212
+        gcloud compute instances list  # Example of a gcloud command
